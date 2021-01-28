@@ -18,7 +18,7 @@ def app_status():
 @app_views.route("/api/v1/stats")
 def stats():
     """
-    Returns statistics about the number of objects available
+    Returns statistics about the number of objects available.
     """
     total = {"amenities": storage.count("Amenity"),
              "cities": storage.count("City"),

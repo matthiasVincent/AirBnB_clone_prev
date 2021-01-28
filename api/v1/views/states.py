@@ -30,8 +30,8 @@ def specific_state(state_id):
 @app_views.route('/states/<state_id>', methods=['DELETE'])
 def delete_state(state_id):
     """ Deletes a State object. """
-    if state_id:
-        full_state = storage.get('State', state_id)
+    full_state = storage.get('State', state_id)
+    if full_state:
         storage.delete(full_state)
         storage.save()
         return jsonify({}), 200

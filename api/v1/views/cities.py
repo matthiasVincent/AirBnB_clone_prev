@@ -10,6 +10,8 @@ from models.state import State
 
 
 """Retrieves the list"""
+
+
 @app_views.route('/states/<state_id>/cities',
                  methods=['GET'], strict_slashes=False)
 def get_cities(state_id):
@@ -32,6 +34,8 @@ def get_cities(state_id):
 
 
 """Retrieves a City object"""
+
+
 @app_views.route('/cities/<city_id>', methods=['GET'])
 def get_id(city_id):
     """
@@ -44,6 +48,8 @@ def get_id(city_id):
 
 
 """Deletes a City"""
+
+
 @app_views.route('/cities/<city_id>', methods=['DELETE'])
 def deleate_id(city_id):
     """
@@ -65,6 +71,8 @@ def deleate_id(city_id):
 
 
 """Creates a City"""
+
+
 @app_views.route('/states/<state_id>/cities',
                  methods=['POST'], strict_slashes=False)
 def create_a_city_post(state_id):
@@ -96,6 +104,8 @@ def create_a_city_post(state_id):
 
 
 """Updates a City"""
+
+
 @app_views.route('/cities/<city_id>', methods=['PUT'])
 def Updates_cities(city_id):
     """

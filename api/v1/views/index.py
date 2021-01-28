@@ -14,8 +14,12 @@ def app_status():
     """
     return(jsonify(status="OK"))
 
+<<<<<<< HEAD
 
 @app_views.route("/api/v1/stats")
+=======
+@app_views.route("/stats")
+>>>>>>> ac1f1de30f90f025f559e9d8e01089ecb912830b
 def stats():
     """
     Returns statistics about the number of objects available.

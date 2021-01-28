@@ -12,67 +12,118 @@ from models.state import State
 """Retrieves the list"""
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False, methods=['GET'])
-def city_id(city_id):
-    ''' busca una ciudad a partir de su id '''
-    objeto = storage.get(City, city_id)
-    if objeto is None:
+@app_views.route('/states/<state_id>/cities',
+                 methods=['GET'], strict_slashes=False)
+def get_cities(state_id):
+    """
+    Access the api call with on a state object to get its cities
+    returns a 404 if not found.
+    - POST: Creates a new city object with the state_object linked
+    Retrieves the list of all City objects of a State: GET
+    """
+    state_request = storage.get("State", state_id)
+    """If the state_id is not linked to any State object,"""
+    if state_request is None:
         abort(404)
-    return jsonify(objeto.to_dict())
+
+    cities = state_request.cities
+    city_request = []
+    for city in cities:
+        city_request.append(city.to_dict())
+    return jsonify(city_request)
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False, methods=['DELETE'])
-def del_city_id(city_id):
-    ''' elimina una ciudad a partir de su id '''
-    objeto = storage.get(City, city_id)
-    if objeto is None:
+"""Retrieves a City object"""
+
+
+@app_views.route('/cities/<city_id>', methods=['GET'])
+def get_id(city_id):
+    """
+    method that retrieves a city filter by id
+    """
+    city_request = storage.get("City", city_id)
+    if city_request is None:
         abort(404)
-    objeto.delete()
+    return jsonify(city_request.to_dict())
+
+
+"""Deletes a City"""
+
+
+@app_views.route('/cities/<city_id>', methods=['DELETE'])
+def deleate_id(city_id):
+    """
+    Deletes a City object: DELETE
+    """
+    delete_id = storage.get("City", city_id)
+
+    """
+    If the city_id is not linked to any City object, raise a 404 error
+    """
+    if delete_id is None:
+        abort(404)
+
+    else:
+        delete_id.delete()
+        storage.save()
+        """return a empty dictionary with status 200"""
+        return jsonify({}), 200
+
+
+"""Creates a City"""
+
+
+@app_views.route('/states/<state_id>/cities',
+                 methods=['POST'], strict_slashes=False)
+def create_a_city_post(state_id):
+    """
+    create a city post
+    """
+    my_state = storage.get("State", state_id)
+
+    """
+    If the state_id is not linked to any State object, raise a 404 error
+    """
+    if my_state is None:
+        abort(404)
+
+    """transform the HTTP body request to a dictionary"""
+    new_city = request.get_json()
+
+    """If the state_id is not linked to any State object, 404 error"""
+    if new_city is None:
+        abort(404, "Not a JSON")
+
+    if 'name' not in new_city:
+        abort(404, "Missing name")
+
+    new_city = City(name=request.json['name'], state_id=state_id)
+    storage.new(new_city)
     storage.save()
-    return jsonify({})
+    return jsonify(new_city.to_dict()), 201
 
 
-@app_views.route('/cities/<city_id>', strict_slashes=False, methods=['PUT'])
-def update_city_id(city_id):
-    ''' actualiza una ciudad a partir de su id '''
-    dic = request.get_json()
-    objeto = storage.get(City, city_id)
-    if objeto is None:
+"""Updates a City"""
+
+
+@app_views.route('/cities/<city_id>', methods=['PUT'])
+def Updates_cities(city_id):
+    """
+    Updates a City object: PUT:
+    """
+    request_city = request.get_json()
+    if request_city is None:
+        abort(400, "Not a JSON")
+
+    update_cities = storage.get("City", city_id)
+    """If the city_id is not linked to any City object,404 error."""
+    if update_cities is None:
         abort(404)
-    if not dic:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    for key in dic.keys():
-        if key not in ["id", "state_id", "created_at", "updated_at"]:
-            setattr(objeto, key, dic[key])
-    objeto.save()
-    return jsonify(objeto.to_dict())
 
-
-@app_views.route('/states/<state_id>/cities',
-                 strict_slashes=False, methods=['GET'])
-def state_city(state_id):
-    ''' listar estados a partir de su id '''
-    objeto = storage.get(State, state_id)
-    if objeto is None:
-        abort(404)
-    lista = [city.to_dict() for city in objeto.cities]
-    return jsonify(lista)
-
-
-@app_views.route('/states/<state_id>/cities',
-                 strict_slashes=False, methods=['POST'])
-def state_city_post(state_id):
-    '''  estados a partir de su id '''
-    objeto = storage.get(State, state_id)
-    dic = request.get_json()
-    if objeto is None:
-        abort(404)
-    if not dic:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    if "name" not in dic:
-        return make_response(jsonify({'error': 'Missing name'}), 400)
-    dic["state_id"] = state_id
-    new_object = City(**dic)
-    print(City(**dic))
-    new_object.save()
-    return make_response(jsonify(new_object.to_dict()), 201)
+    for key in request_city:
+        if key == 'id' or key == 'created_at' or key == 'updated_at':
+            pass
+        else:
+            setattr(update_cities, key, request_city[key])
+    storage.save()
+    return jsonify(update_cities.to_dict()), 200

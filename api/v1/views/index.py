@@ -7,16 +7,6 @@ from flask import jsonify
 from models import storage
 
 
-classes = {
-    "amenities": "Amenity",
-    "cities": "City",
-    "places": "Place",
-    "reviews": "Review",
-    "states": "State",
-    "users": "User"
-}
-
-
 @app_views.route("/status")
 def app_status():
     """
@@ -30,7 +20,10 @@ def stats():
     """
     Returns statistics about the number of objects available.
     """
-    new_dict = {}
-    for key, value in classes.items():
-        new_dict[key] = storage.count(value)
-    return jsonify(new_dict)
+    total = {"amenities": storage.count("Amenity"),
+             "cities": storage.count("City"),
+             "places": storage.count("Place"),
+             "reviews": storage.count("Review"),
+             "states": storage.count("State"),
+             "users": storage.count("User")}
+    return jsonify(total)

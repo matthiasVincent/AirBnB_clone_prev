@@ -26,12 +26,12 @@ def specific_amenity(amenity_id):
     return jsonify(full_amenity.to_dict())
 
 
-@app_views.route('/amenities/<amenitie_id>', methods=['DELETE'])
-def delete_amenity(amenitie_id):
+@app_views.route('/amenities/<amenity_id>', methods=['DELETE'])
+def delete_amenity(amenity_id):
     """ Deletes a Amenity object. """
-    full_amenitie = storage.get('Amenity', amenitie_id)
-    if amenitie_id:
-        storage.delete(full_amenitie)
+    full_amenity = storage.get('Amenity', amenity_id)
+    if full_amenity:
+        storage.delete(full_amenity)
         storage.save()
         return jsonify({}), 200
     else:

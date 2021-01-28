@@ -116,7 +116,7 @@ def Updates_cities(city_id):
         abort(400, "Not a JSON")
 
     update_cities = storage.get("City", city_id)
-    """If the city_id is not linked to any City object,404 error"""
+    """If the city_id is not linked to any City object,404 error."""
     if update_cities is None:
         abort(404)
 

@@ -21,10 +21,9 @@ def all_states():
 @app_views.route('/states/<state_id>', methods=['GET'])
 def specific_state(state_id):
     """ Retrieves a State object. """
+    full_state = storage.get('State', state_id)
     if state_id:
-        for value in storage.all('State').values():
-            if state_id == value.id:
-                return jsonify(value.to_dict())
+        return jsonify(full_state.to_dict()), 200
     else:
         abort(404)
 

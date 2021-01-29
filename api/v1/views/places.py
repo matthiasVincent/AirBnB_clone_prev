@@ -36,7 +36,8 @@ def all_places_of_a_city(city_id):
     if not full_city:
         abort(404)
     for city in storage.all('Place').values():
-        list_of_places.append(city.to_dict())
+        if city.to_dict()["city_id"] == city_id:
+            list_of_places.append(city.to_dict())
     return jsonify(list_of_places)
 
 

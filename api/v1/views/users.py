@@ -44,8 +44,6 @@ def create_user():
     dic = request.get_json()
     if not dic:
         abort(400, {'Not a JSON'})
-    if 'name' not in dic:
-        abort(400, {'Missing name'})
     if 'email' not in dic:
         abort(400, {'Missing email'})
     if 'password' not in dic:

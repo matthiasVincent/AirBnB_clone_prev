@@ -44,9 +44,9 @@ def create_state():
     """ Creates a State. """
     dic = request.get_json()
     if not dic:
-        abort({'Not a JSON'}, 400)
+        abort(400, {'Not a JSON'})
     if 'name' not in dic:
-        abort({'Missing name'}, 400)
+        abort(400, {'Missing name'})
     new_state = State(**dic)
     storage.new(new_state)
     storage.save()
@@ -61,7 +61,7 @@ def updates_state(state_id):
     if not selected_state:
         abort(404)
     if not dic:
-        abort({'Not a JSON'}, 400)
+        abort(400, {'Not a JSON'})
     for key, value in dic.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(selected_state, key, value)

@@ -85,7 +85,8 @@ def updates_review(review_id):
     if not dic:
         abort(400, {'Not a JSON'})
     for key, value in dic.items():
-        if key not in ['id', 'user_id', 'place_id', 'updated_at', 'created_at']:
+        if key not in ['id', 'user_id', 'place_id',
+                       'updated_at', 'created_at']:
             setattr(selected_review, key, value)
     storage.save()
     return jsonify(selected_review.to_dict()), 200

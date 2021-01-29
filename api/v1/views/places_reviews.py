@@ -2,10 +2,10 @@
 """
 Module to interface with the link between Places and Amenities
 """
-from api.v1.views import (app_views, Place, Review, storage)
-from flask import (request, jsonify, abort)
-
-#from api.v1.views import get_linked
+from api.v1.views import app_views
+from flask import Flask, jsonify, abort, request
+from models import storage
+from models.review import Review
 
 
 @app_views.route('/places/<place_id>/reviews',
@@ -30,11 +30,6 @@ def review_by_place(place_id=None):
         new_obj = State(**posted_obj)
         storage.save()
         return(jsonify(new_obj.to_json()), 201)
-
-#    all_reviews = storage.get('Place', place_id).review
-#    rtn_json = []
-#    for review in all_reviews:
-#        rtn_json.append(review.to_json())
     return(get_linked('Place', place_id, review))
 
 

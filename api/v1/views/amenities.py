@@ -43,9 +43,9 @@ def create_amenity():
     """ Creates a Amenity. """
     dic = request.get_json()
     if not dic:
-        abort({'Not a JSON'}, 400)
+        abort(400, {'Not a JSON'})
     if 'name' not in dic:
-        abort({'Missing name'}, 400)
+        abort(400, {'Missing name'})
     new_amenity = Amenity(**dic)
     storage.new(new_amenity)
     storage.save()
@@ -60,7 +60,7 @@ def updates_amenity(amenity_id):
     if not selected_amenity:
         abort(404)
     if not dic:
-        abort({'Not a JSON'}, 400)
+        abort(400, {'Not a JSON'})
     for key, value in dic.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(selected_amenity, key, value)

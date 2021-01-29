@@ -92,10 +92,10 @@ def create_a_city_post(state_id):
 
     """If the state_id is not linked to any State object, 404 error"""
     if new_city is None:
-        abort(404, "Not a JSON")
+        abort(404, {"Not a JSON"})
 
     if 'name' not in new_city:
-        abort(404, "Missing name")
+        abort(404, {"Missing name"})
 
     new_city = City(name=request.json['name'], state_id=state_id)
     storage.new(new_city)
@@ -113,7 +113,7 @@ def Updates_cities(city_id):
     """
     request_city = request.get_json()
     if request_city is None:
-        abort(400, "Not a JSON")
+        abort(400, {"Not a JSON"})
 
     update_cities = storage.get("City", city_id)
     """If the city_id is not linked to any City object,404 error."""

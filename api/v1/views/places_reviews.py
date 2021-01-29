@@ -69,6 +69,7 @@ def create_Review(place_id):
         abort(400, {'Missing text'})
     if 'user_id' not in dic:
         abort(400, {'Missing user_id'})
+    dic["place_id"] = place_id
     new_review = Review(**dic)
     storage.new(new_review)
     storage.save()

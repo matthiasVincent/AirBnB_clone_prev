@@ -159,8 +159,8 @@ No known bugs at this time.
 * Style guide for Python code: [PEP8](https://www.python.org/dev/peps/pep-0008/)
 
 ## Authors
-* [Alison Quintero](https://twitter.com/AlisonQuinter17)
-* [Thiago Trujillo](https://twitter.com/thiago9623)
+* Mikias Demissie
+* Matthias Sunday Oduh
 
 ## License
 Public Domain. No copy write protection. 
